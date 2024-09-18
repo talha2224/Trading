@@ -1,6 +1,8 @@
 import React from 'react'
+import { useNavigate } from 'react-router-dom'
 
 const LoginPage = () => {
+    const nav = useNavigate()
     return (
 
         <div className='w-screen h-screen flex justify-center items-center flex-col px-5'>
@@ -15,7 +17,7 @@ const LoginPage = () => {
                 <p className='mt-4 mb-2'>Password</p>
                 <input type="password" name="password" id="" required={true} className='w-[100%] sm:w-[25rem] h-[3rem] rounded-md px-3 border border-[#0E2F44] bg-transparent outline-none' />
             </div>
-            <button className='mt-6 w-[100%] sm:w-[25rem] h-[3rem] bg-[#135960] block'>Sign In</button>
+            <button onClick={()=>nav("/admin/home")} className='mt-6 w-[100%] sm:w-[25rem] h-[3rem] bg-[#135960] block'>Sign In</button>
         </div>
     )
 }
