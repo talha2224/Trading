@@ -1,4 +1,5 @@
 import React from 'react'
+import { useNavigate } from 'react-router-dom'
 
 const RegisterPage = () => {
     const nav = useNavigate()

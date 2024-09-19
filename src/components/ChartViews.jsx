@@ -1,5 +1,5 @@
 import React from 'react'
-import DotGraph from '../assets/dot.png'
+import DotGraph from '../assets/chart1.png'
 import Area1 from '../assets/area1.png'
 const ChartViews = () => {
     const arr = [1, 2, 3, 4]
@@ -31,7 +31,7 @@ const ChartViews = () => {
                 <div className='flex-1 p-5 bg-[#0E262E] rounded-md w-[100%] mb-4'>
                     <h1>Trading</h1>
                     <h1 className='my-3 text-xl'>Graph Showing Trading Volume</h1>
-                    <img src={DotGraph} alt="" className='h-[12rem]' />
+                    <img style={{"mixBlendMode":"lighten"}} src={DotGraph} alt="" className='h-[12rem] w-full bg-cover' />
                 </div>
             </div>
 
