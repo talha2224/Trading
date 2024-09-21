@@ -1,19 +1,20 @@
 import React, { useState } from 'react'
 import { FaBell, FaPlus, FaUser } from "react-icons/fa";
+import { useNavigate } from 'react-router-dom';
 
 
 
 const LoginNavbar = () => {
 
     const [showTypes, setshowTypes] = useState(false)
-
+    const nav = useNavigate()
     return (
 
         <div className='px-5 flex justify-between items-center h-[10vh] w-[100%] overflow-x-auto gap-x-2 z-50'>
 
             <div className='flex items-center gap-x-5'>
 
-                <h1 className='text-base md:text-3xl font-semibold'>LOGO</h1>
+                <h1 className='text-base md:text-3xl font-semibold cursor-pointer' onClick={()=>nav("/user/home")}>LOGO</h1>
 
                 <div className='relative'>
 
@@ -47,10 +48,10 @@ const LoginNavbar = () => {
                 <div className='flex justify-center items-center h-[2.3rem] min-w-[2.3rem] bg-[#142937] rounded-md px-2 cursor-pointer'>
                     <FaBell />
                 </div>
-                <div className='flex justify-center items-center h-[2.3rem] min-w-[2.3rem] bg-[#142937] rounded-md px-2 cursor-pointer'>
+                <div onClick={()=>nav("/setting")} className='flex justify-center items-center h-[2.3rem] min-w-[2.3rem] bg-[#142937] rounded-md px-2 cursor-pointer'>
                     <FaUser />
                 </div>
-                <button className='h-[2.3rem] rounded-md px-2 bg-[#142937] flex justify-between items-center cursor-pointer'>Deposit</button>
+                <button onClick={()=>nav("/deposit")} className='h-[2.3rem] rounded-md px-2 bg-[#142937] flex justify-between items-center cursor-pointer'>Deposit</button>
             </div>
 
         </div>

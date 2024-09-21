@@ -10,6 +10,8 @@ import ForgotPage from './pages/Users/ForgotPage'
 import UserHome from './pages/Users/UserHome'
 import Layout from './components/Users/Layout'
 import { useState } from 'react'
+import DepositPage from './pages/Users/DepositPage'
+import Settings from './pages/Users/Settings'
 
 function App() {
 
@@ -24,6 +26,8 @@ function App() {
       <Route path='/user/' element={<Layout setOpenNav={setOpenNav} openNav={openNav} tradeType={tradeType} settradeType={settradeType}/>} >
         <Route path='home' element={<UserHome tradeType={tradeType} settradeType={settradeType}/>} />
       </Route>
+      <Route path='/deposit' element={<DepositPage />} />
+      <Route path='/setting' element={<Settings/>} />
 
 
       <Route path='/admin/login' element={<LoginPage />} />
