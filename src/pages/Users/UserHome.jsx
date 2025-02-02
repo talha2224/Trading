@@ -39,7 +39,7 @@ const UserHome = ({ settradeType, tradeType }) => {
     <div className='block lg:flex justify-between items-start gap-x-4 h-[100%]'>
 
 
-      <div className='bg-gradient-to-b from-[#051617] to-[#135960] flex-1 h-full p-5 rounded-xl flex flex-col '>
+      <div className='bg-gradient-to-b from-[#04080] to-[#04080F] flex-1 h-full p-5 rounded-xl flex flex-col '>
         <div className='flex items-center gap-x-8 overflow-x-auto w-[100%]'>
           <button className='bg-[#229FAA] px-2 h-[2.3rem] rounded-md text-nowrap'>EUR/USD <span className='text-[#FFAE34] ml-4'>95%</span></button>
           <div className='flex justify-between items-center h-[2.3rem] rounded-md text-nowrap px-2 gap-x-4 bg-[#240847] cursor-pointer'>

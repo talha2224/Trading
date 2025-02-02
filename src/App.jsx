@@ -12,6 +12,13 @@ import Layout from './components/Users/Layout'
 import { useState } from 'react'
 import DepositPage from './pages/Users/DepositPage'
 import Settings from './pages/Users/Settings'
+import TradingSignal from './pages/Users/TradingSignal'
+import Community from './pages/Users/Community'
+import Calendar from './pages/Users/Calendar'
+import Ibo from './pages/Users/Ibo'
+import Membership from './pages/Users/Membership'
+import Calculate from './pages/Users/Calculate'
+import Video from './pages/Users/Video'
 
 function App() {
 
@@ -25,6 +32,14 @@ function App() {
       <Route path='/forgot' element={<ForgotPage />} />
       <Route path='/user/' element={<Layout setOpenNav={setOpenNav} openNav={openNav} tradeType={tradeType} settradeType={settradeType}/>} >
         <Route path='home' element={<UserHome tradeType={tradeType} settradeType={settradeType}/>} />
+        <Route path='trading/signal' element={<TradingSignal/>}/>
+        <Route path='community' element={<Community/>}/>
+        <Route path='calendar' element={<Calendar/>}/>
+        <Route path='ibo' element={<Ibo/>}/>
+        <Route path='calendar' element={<Calendar/>}/>
+        <Route path='membership' element={<Membership/>}/>
+        <Route path='membership/calculate' element={<Calculate/>}/>
+        <Route path='membership/video' element={<Video/>}/>
       </Route>
       <Route path='/deposit' element={<DepositPage />} />
       <Route path='/setting' element={<Settings/>} />
