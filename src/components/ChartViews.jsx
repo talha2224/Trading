@@ -1,6 +1,4 @@
 import React from 'react'
-import DotGraph from '../assets/chart1.png'
-import Area1 from '../assets/area1.png'
 import Chart from "react-apexcharts";
 
 
