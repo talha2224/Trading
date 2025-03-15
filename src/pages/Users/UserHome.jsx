@@ -22,6 +22,78 @@ import Candle from '../../assets/candle2.png'
 import { CiCircleMinus, CiCirclePlus } from 'react-icons/ci';
 import { ImCross } from "react-icons/im";
 import { LuTimerReset } from "react-icons/lu";
+import Chart from "react-apexcharts";
+
+
+const options = {
+  chart: {
+    type: "candlestick",
+    height: 350,
+    toolbar: {
+      show: false, // Hide extra tools
+    },
+  },
+  title: {
+    text: "Candlestick Chart",
+    align: "left",
+  },
+  xaxis: {
+    type: "datetime",
+  },
+  yaxis: {
+    tooltip: {
+      enabled: true,
+    },
+  },
+  plotOptions: {
+    candlestick: {
+      colors: {
+        upward: "#4CAF50", // Green for bullish candles
+        downward: "#F44336", // Red for bearish candles
+      },
+    },
+  },
+  tooltip: {
+    theme: "dark", // Sets tooltip background color to black
+    style: {
+      fontSize: "14px",
+      fontFamily: "Arial",
+    },
+  },
+};
+
+
+const series = [
+  {
+    data: [
+      { x: new Date("2024-03-01").getTime(), y: [110, 120, 105, 115] }, // Green
+      { x: new Date("2024-03-02").getTime(), y: [115, 125, 110, 120] }, // Green
+      { x: new Date("2024-03-03").getTime(), y: [120, 130, 115, 125] }, // Green
+      { x: new Date("2024-03-04").getTime(), y: [125, 135, 120, 130] }, // Green
+      { x: new Date("2024-03-05").getTime(), y: [130, 140, 125, 135] }, // Green
+      { x: new Date("2024-03-06").getTime(), y: [135, 145, 130, 140] }, // Green
+      { x: new Date("2024-03-07").getTime(), y: [140, 150, 135, 145] }, // Green
+      { x: new Date("2024-03-08").getTime(), y: [145, 155, 140, 150] }, // Green
+      { x: new Date("2024-03-09").getTime(), y: [150, 160, 145, 155] }, // Green
+      { x: new Date("2024-03-10").getTime(), y: [155, 165, 150, 160] }, // Green
+      { x: new Date("2024-03-11").getTime(), y: [160, 170, 155, 165] }, // Green
+      { x: new Date("2024-03-12").getTime(), y: [165, 175, 160, 170] }, // Green
+      { x: new Date("2024-03-13").getTime(), y: [170, 180, 165, 175] }, // Green
+      { x: new Date("2024-03-14").getTime(), y: [175, 185, 170, 180] }, // Green
+      { x: new Date("2024-03-15").getTime(), y: [180, 190, 175, 185] }, // Green
+      { x: new Date("2024-03-16").getTime(), y: [185, 195, 180, 190] }, // Green
+      { x: new Date("2024-03-17").getTime(), y: [190, 200, 185, 195] }, // Green
+      { x: new Date("2024-03-18").getTime(), y: [195, 205, 190, 200] }, // Green
+      { x: new Date("2024-03-19").getTime(), y: [200, 210, 195, 205] }, // Green
+      { x: new Date("2024-03-20").getTime(), y: [205, 195, 190, 195] }, // RED
+      { x: new Date("2024-03-21").getTime(), y: [195, 185, 180, 185] }, // RED
+      { x: new Date("2024-03-22").getTime(), y: [185, 175, 170, 175] }, // RED
+      { x: new Date("2024-03-23").getTime(), y: [175, 165, 160, 165] }, // RED
+      { x: new Date("2024-03-24").getTime(), y: [165, 155, 150, 155] }, // RED
+    ],
+  },
+];
+;
 
 
 
@@ -120,9 +192,14 @@ const UserHome = ({ settradeType, tradeType }) => {
             <div className='flex-1 flex flex-col'>
 
               <div className='flex-1 w-[100%] h-[100%] flex justify-between items-start'>
+
+                {/* REPLACE IMAGE WITH CANDLE CHART AND ADD STATIC CHART DATA  */}
                 <div className='flex justify-center items-center flex-1 mt-5'>
-                  <img src={Candle} alt="" className='' />
+                  <Chart options={options} series={series} type="candlestick" width={850} height={450}/>
+
                 </div>
+
+
                 <div>
                   <p className='text-[#C4C4C4] mb-1'>$0.6452</p>
                   <p className='text-[#C4C4C4] mb-1'>$0.6452</p>
@@ -185,7 +262,7 @@ const UserHome = ({ settradeType, tradeType }) => {
           <p className='text-[#c4c4c4] mb-2'>Amount</p>
           <div className='w-[15rem] h-[2.5rem] rounded-md px-3 border border-[#0E2F44] bg-transparent outline-none flex justify-between items-center'>
             <CiCirclePlus className="text-[#FFAE34]" />
-            <p>1.00</p>
+            <input type="number" defaultValue={0} name="" id="" className='flex-1 outline-none border-none text-white bg-transparent ' />
             <CiCircleMinus className="text-[#FFAE34]" />
           </div>
         </div>
@@ -193,7 +270,7 @@ const UserHome = ({ settradeType, tradeType }) => {
         <div className='mt-2'>
           <p className='text-[#c4c4c4] mb-2'>Leverage</p>
           <div className='w-[15rem] h-[2.5rem] rounded-md px-3 border border-[#0E2F44] bg-transparent outline-none flex justify-center items-center'>
-            <p>1.00</p>
+            <input type="number" name="" id="" className='flex-1 outline-none border-none text-white w-[100%] bg-transparent' />
           </div>
         </div>
 
@@ -201,7 +278,7 @@ const UserHome = ({ settradeType, tradeType }) => {
         <div className='mt-2'>
           <p className='text-[#c4c4c4] mb-2'>Margin Requirement</p>
           <div className='w-[15rem] h-[3rem] rounded-md px-3 border border-[#0E2F44] bg-transparent outline-none flex justify-center items-center'>
-            <p>1.00</p>
+            <input type="number" name="" id="" className='flex-1 outline-none border-none text-white w-[100%] bg-transparent' />
           </div>
         </div>
 
@@ -209,7 +286,7 @@ const UserHome = ({ settradeType, tradeType }) => {
         <div className='mt-2'>
           <p className='text-[#c4c4c4] mb-2'>Take Profit</p>
           <div className='w-[15rem] h-[2.5rem] rounded-md px-3 border border-[#0E2F44] bg-transparent outline-none flex justify-center items-center'>
-            <p>1.00</p>
+            <input type="number" name="" id="" className='flex-1 outline-none border-none text-white w-[100%] bg-transparent' />
           </div>
         </div>
 
@@ -217,7 +294,7 @@ const UserHome = ({ settradeType, tradeType }) => {
         <div className='mt-2'>
           <p className='text-[#c4c4c4] mb-2'>Stop Loss</p>
           <div className='w-[15rem] h-[2.5rem] rounded-md px-3 border border-[#0E2F44] bg-transparent outline-none flex justify-center items-center'>
-            <p>1.00</p>
+            <input type="number" name="" id="" className='flex-1 outline-none border-none text-white w-[100%] bg-transparent' />
           </div>
         </div>
         <button className={`w-[15rem] h-[2.5rem] rounded-md ${type === "buy" ? "bg-[#01B28B]" : "bg-[#FF5757]"} mt-4`}>Place {type === "buy" ? "Buy" : " Sell"}</button>
