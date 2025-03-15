@@ -60,7 +60,6 @@ const options2 = {
     },
     yaxis: {
         labels: { style: { colors: "#fff" } },
-        title: { text: "Number of Mentions", style: { color: "#fff" } },
     },
     grid: { borderColor: "#555" },
     legend: { labels: { colors: "#fff" } },
