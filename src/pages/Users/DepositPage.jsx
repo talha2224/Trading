@@ -1,11 +1,10 @@
 import React, { useState } from 'react'
 import LoginNavbar from '../../components/Users/LoginNavbar'
-import { FaRegCreditCard } from "react-icons/fa";
+import { FaBtc, FaCopy, FaEthereum, FaRegCreditCard } from "react-icons/fa";
 import { BiDownArrow, BiSolidDownArrow } from 'react-icons/bi';
-import QrImage from '../../assets/qr.png'
-import Input from '../../assets/input.png'
-import All from '../../assets/all.png'
-
+import { IoLogoUsd } from "react-icons/io5";
+import { SiSolana } from "react-icons/si";
+import { RiBnbFill } from "react-icons/ri";
 
 const DepositPage = () => {
 
@@ -80,17 +79,17 @@ const DepositPage = () => {
                                             <div className='mt-4'>
                                                 <p className='text-[#c4c4c4] mb-2 text-xs'>Enter Deposit Amount</p>
                                                 <div className='w-[15rem] h-[2.5rem] rounded-md px-3  bg-[#0B3639] outline-none flex justify-between items-center'>
-                                                    <p>900$</p>
+                                                    <input type="number" name="" id="" className='w-[100%] px-3 bg-transparent outline-none border-none' />
                                                 </div>
                                             </div>
                                             <div className='mt-4 w-[15rem] h-[2.5rem] rounded-md px-3  bg-[#0B3639] outline-none flex justify-center items-center'>
-                                                <p>30$</p>
+                                                <input type="number" name="" id="" className='w-[100%] px-3 bg-transparent outline-none border-none' />
                                             </div>
                                             <div className='mt-4 w-[15rem] h-[2.5rem] rounded-md px-3  bg-[#0B3639] outline-none flex justify-center items-center'>
-                                                <p>100$</p>
+                                                <input type="number" name="" id="" className='w-[100%] px-3 bg-transparent outline-none border-none' />
                                             </div>
                                             <div className='mt-4 w-[15rem] h-[2.5rem] rounded-md px-3  bg-[#0B3639] outline-none flex justify-center items-center'>
-                                                <p>300$</p>
+                                                <input type="number" name="" id="" className='w-[100%] px-3 bg-transparent outline-none border-none' />
                                             </div>
                                             <p className='text-xs text-[#c4c4c4] mt-4'>Minimum transfer amount: 10 USD</p>
                                             <p className='text-xs text-[#c4c4c4] mt-2'>Maximum transfer amount: 50000 USD</p>
@@ -99,12 +98,15 @@ const DepositPage = () => {
                                         <div className='border-r border-[#103147] px-10 flex-1'>
                                             <p className='text-xs text-[#c4c4c4] text-center'>Simply use your bank card to purchase Bitcoin through the most <br /> well-known cryptocurrency, changelly.com, to fund your trading <br /> account.</p>
                                             <div className='flex justify-center items-center mt-10'>
-                                                <img src={QrImage} alt="" />
+                                                <img className='h-[12rem]' src={`https://img.freepik.com/premium-vector/vector-qr-code-sample-smartphone-scanning-isolated-white-background_661675-2003.jpg`} alt="" />
                                             </div>
 
                                             <div className='mt-4 flex items-center gap-x-4'>
                                                 <p className='text-[#c4c4c4] text-xs'>Bitcoin (BTC) Address:</p>
-                                                <img src={Input} alt="" />
+                                                <div className='w-[15rem] h-[2.3rem] rounded-md bg-[#061016] px-3 flex justify-between items-center'>
+                                                    <p className='text-sm text-[#c4c4c4]'>dhdy7ecegc7tecge</p>
+                                                    <FaCopy className=' cursor-pointer' />
+                                                </div>
                                             </div>
                                         </div>
 
@@ -141,11 +143,36 @@ const DepositPage = () => {
                                         <div className='border-r border-[#103147] flex-1'>
                                             <p className='mb-2 text-xs text-[#c4c4c4]'>Select Funding Method</p>
                                             <div className='w-[18.5rem] h-[3rem] mt-3 flex justify-between items-center bg-[#0b3639] outline-none rounded-md px-3 text-white placeholder:text-white'>
-                                                <p className='text-sm'>Search For Crypto</p>
-                                                <BiDownArrow />
+                                                <input type="text" name="" placeholder='Search For Crypto' className=' bg-transparent flex-1 outline-none' id="" />
                                             </div>
 
-                                            <img src={All} alt="" className='mt-10' />
+                                            <div className='w-[18.5rem] h-[2.5rem] rounded-md bg-[#061016] px-3 flex items-center gap-x-3 mt-3'>
+                                                <FaBtc className=' text-orange-600' />
+                                                <p className='text-sm text-[#c4c4c4]'>Bitcoin</p>
+                                            </div>
+
+
+                                            <div className='w-[18.5rem] h-[2.5rem] rounded-md bg-[#061016] px-3 flex items-center gap-x-3 mt-3'>
+                                                <FaEthereum className=' text-[#88aaf1]' />
+                                                <p className='text-sm text-[#c4c4c4]'>Ethereum</p>
+                                            </div>
+
+                                            <div className='w-[18.5rem] h-[2.5rem] rounded-md bg-[#061016] px-3 flex items-center gap-x-3 mt-3'>
+                                                <IoLogoUsd className=' text-green-200' />
+                                                <p className='text-sm text-[#c4c4c4]'>Thether USDT</p>
+                                            </div>
+
+                                            <div className='w-[18.5rem] h-[2.5rem] rounded-md bg-[#061016] px-3 flex items-center gap-x-3 mt-3'>
+                                                <SiSolana className=' text-purple-600' />
+                                                <p className='text-sm text-[#c4c4c4]'>Solana</p>
+                                            </div>
+
+                                            <div className='w-[18.5rem] h-[2.5rem] rounded-md bg-[#061016] px-3 flex items-center gap-x-3 mt-3'>
+                                                <RiBnbFill className=' text-yellow-600' />
+                                                <p className='text-sm text-[#c4c4c4]'>BNB</p>
+                                            </div>
+
+
                                         </div>
 
                                         <div className='border-r border-[#103147] px-10'>
@@ -159,17 +186,17 @@ const DepositPage = () => {
                                             <div className='mt-4'>
                                                 <p className='text-[#c4c4c4] mb-2 text-xs'>Enter Deposit Amount</p>
                                                 <div className='w-[15rem] h-[2.5rem] rounded-md px-3  bg-[#0B3639] outline-none flex justify-between items-center'>
-                                                    <p>900$</p>
+                                                    <input type="number" name="" id="" className='w-[100%] px-3 bg-transparent outline-none border-none' />
                                                 </div>
                                             </div>
                                             <div className='mt-4 w-[15rem] h-[2.5rem] rounded-md px-3  bg-[#0B3639] outline-none flex justify-center items-center'>
-                                                <p>30$</p>
+                                                <input type="number" name="" id="" className='w-[100%] px-3 bg-transparent outline-none border-none' />
                                             </div>
                                             <div className='mt-4 w-[15rem] h-[2.5rem] rounded-md px-3  bg-[#0B3639] outline-none flex justify-center items-center'>
-                                                <p>100$</p>
+                                                <input type="number" name="" id="" className='w-[100%] px-3 bg-transparent outline-none border-none' />
                                             </div>
                                             <div className='mt-4 w-[15rem] h-[2.5rem] rounded-md px-3  bg-[#0B3639] outline-none flex justify-center items-center'>
-                                                <p>300$</p>
+                                                <input type="number" name="" id="" className='w-[100%] px-3 bg-transparent outline-none border-none' />
                                             </div>
                                             <p className='text-xs text-[#c4c4c4] mt-4'>Minimum transfer amount: 10 USD</p>
                                             <p className='text-xs text-[#c4c4c4] mt-2'>Maximum transfer amount: 50000 USD</p>
@@ -178,12 +205,15 @@ const DepositPage = () => {
                                         <div className='pl-10 flex-1'>
                                             <p className='text-xs text-[#c4c4c4] text-center'>Simply use your bank card to purchase Bitcoin through the most <br /> well-known cryptocurrency, changelly.com, to fund your trading <br /> account.</p>
                                             <div className='flex justify-center items-center mt-10'>
-                                                <img src={QrImage} alt="" />
+                                                <img className='h-[12rem]' src={`https://img.freepik.com/premium-vector/vector-qr-code-sample-smartphone-scanning-isolated-white-background_661675-2003.jpg`} alt="" />
                                             </div>
 
                                             <div className='mt-4 flex items-center gap-x-4'>
                                                 <p className='text-[#c4c4c4] text-xs'>Bitcoin (BTC) Address:</p>
-                                                <img src={Input} alt="" />
+                                                <div className='w-[15rem] h-[2.3rem] rounded-md bg-[#061016] px-3 flex justify-between items-center'>
+                                                    <p className='text-sm text-[#c4c4c4]'>dhdy7ecegc7tecge</p>
+                                                    <FaCopy className=' cursor-pointer' />
+                                                </div>
                                             </div>
                                         </div>
 
@@ -208,13 +238,38 @@ const DepositPage = () => {
 
 
                                 <div className='border-r border-[#103147] flex-1'>
-                                    <p className='mb-2 text-xs text-[#c4c4c4]'>Withdraw you funds in crypto</p>
-                                    <div className='w-[18.5rem] h-[3rem] mt-3 flex justify-between items-center bg-[#071E1F] outline-none rounded-md px-3 text-white placeholder:text-white'>
-                                        <p className='text-sm'>Search For Crypto</p>
-                                        <BiDownArrow />
+                                    <p className='mb-2 text-xs text-[#c4c4c4]'>Withdraw Your Funds</p>
+                                    <div className='w-[18.5rem] h-[3rem] mt-3 flex justify-between items-center bg-[#0b3639] outline-none rounded-md px-3 text-white placeholder:text-white'>
+                                        <input type="text" name="" placeholder='Search For Crypto' className=' bg-transparent flex-1 outline-none' id="" />
                                     </div>
 
-                                    <img src={All} alt="" className='mt-10' />
+                                    <div className='w-[18.5rem] h-[2.5rem] rounded-md bg-[#061016] px-3 flex items-center gap-x-3 mt-3'>
+                                        <FaBtc className=' text-orange-600' />
+                                        <p className='text-sm text-[#c4c4c4]'>Bitcoin</p>
+                                    </div>
+
+
+                                    <div className='w-[18.5rem] h-[2.5rem] rounded-md bg-[#061016] px-3 flex items-center gap-x-3 mt-3'>
+                                        <FaEthereum className=' text-[#88aaf1]' />
+                                        <p className='text-sm text-[#c4c4c4]'>Ethereum</p>
+                                    </div>
+
+                                    <div className='w-[18.5rem] h-[2.5rem] rounded-md bg-[#061016] px-3 flex items-center gap-x-3 mt-3'>
+                                        <IoLogoUsd className=' text-green-200' />
+                                        <p className='text-sm text-[#c4c4c4]'>Thether USDT</p>
+                                    </div>
+
+                                    <div className='w-[18.5rem] h-[2.5rem] rounded-md bg-[#061016] px-3 flex items-center gap-x-3 mt-3'>
+                                        <SiSolana className=' text-purple-600' />
+                                        <p className='text-sm text-[#c4c4c4]'>Solana</p>
+                                    </div>
+
+                                    <div className='w-[18.5rem] h-[2.5rem] rounded-md bg-[#061016] px-3 flex items-center gap-x-3 mt-3'>
+                                        <RiBnbFill className=' text-yellow-600' />
+                                        <p className='text-sm text-[#c4c4c4]'>BNB</p>
+                                    </div>
+
+
                                 </div>
 
                                 <div className=' px-10'>
@@ -228,17 +283,17 @@ const DepositPage = () => {
                                     <div className='mt-4'>
                                         <p className='text-[#c4c4c4] mb-2 text-xs'>Enter Deposit Amount</p>
                                         <div className='w-[15rem] h-[2.5rem] rounded-md px-3  bg-[#0B3639] outline-none flex justify-between items-center'>
-                                            <p>900$</p>
+                                            <input type="number" name="" id="" className='w-[100%] px-3 bg-transparent outline-none border-none' />
                                         </div>
                                     </div>
                                     <div className='mt-4 w-[15rem] h-[2.5rem] rounded-md px-3  bg-[#0B3639] outline-none flex justify-center items-center'>
-                                        <p>30$</p>
+                                        <input type="number" name="" id="" className='w-[100%] px-3 bg-transparent outline-none border-none' />
                                     </div>
                                     <div className='mt-4 w-[15rem] h-[2.5rem] rounded-md px-3  bg-[#0B3639] outline-none flex justify-center items-center'>
-                                        <p>100$</p>
+                                        <input type="number" name="" id="" className='w-[100%] px-3 bg-transparent outline-none border-none' />
                                     </div>
                                     <div className='mt-4 w-[15rem] h-[2.5rem] rounded-md px-3  bg-[#0B3639] outline-none flex justify-center items-center'>
-                                        <p>300$</p>
+                                        <input type="number" name="" id="" className='w-[100%] px-3 bg-transparent outline-none border-none' />
                                     </div>
                                     <p className='text-xs text-[#c4c4c4] mt-4'>Minimum transfer amount: 10 USD</p>
                                     <p className='text-xs text-[#c4c4c4] mt-2'>Maximum transfer amount: 50000 USD</p>
@@ -247,17 +302,18 @@ const DepositPage = () => {
                                 <div className='border-l border-[#103147] pl-10 flex-1'>
                                     <p className='text-[#c4c4c4] text-center'>Provide your details below</p>
                                     <p className='mb-2 text-xs text-[#c4c4c4]'>Amount</p>
-                                    <input type='text' placeholder='80' className='w-[18.5rem] h-[3rem] mt-3 flex justify-between items-center bg-[#071E1F] outline-none rounded-md px-3 text-white placeholder:text-white'/>
+                                    <input type='text' placeholder='80' className='w-[18.5rem] h-[3rem] mt-3 flex justify-between items-center bg-[#071E1F] outline-none rounded-md px-3 text-white placeholder:text-white' />
                                     <p className='mb-2 text-xs text-[#c4c4c4] mt-4'>Withdraw Crypto</p>
-                                    <input type='text' placeholder='80' className='w-[18.5rem] h-[3rem] mt-3 flex justify-between items-center bg-[#071E1F] outline-none rounded-md px-3 text-white placeholder:text-white'/>
+                                    <input type='text' placeholder='80' className='w-[18.5rem] h-[3rem] mt-3 flex justify-between items-center bg-[#071E1F] outline-none rounded-md px-3 text-white placeholder:text-white' />
                                     <p className='mb-2 text-xs text-[#c4c4c4] mt-4'>Select Network</p>
                                     <div className='w-[18.5rem] h-[3rem] mt-3 flex justify-between items-center bg-[#071E1F] outline-none rounded-md px-3 text-white placeholder:text-white'>
-                                        <p className='text-sm'>Tether (USDT) BEP - 20</p>
+                                        <input placeholder='Tether (USDT) BEP - 20' type="text" name="" id="" className='flex-1 pr-3 bg-transparent outline-none border-none' />
+
                                         <BiDownArrow />
                                     </div>
                                     <p className='text-xs text-[#ffae34] mt-2'>Note: Only Tether (USDT) TRC-20 transactions selected. If something goes wrong, we won't be able to locate your transaction.</p>
                                     <p className='mb-2 text-xs text-[#c4c4c4] mt-4'>Enter wallet address</p>
-                                    <input type='text' placeholder='3CCVnxZCsB7ZYuXCznAhpZSEwuFKYdZj7F' className='w-[18.5rem] h-[3rem] mt-3 flex justify-between items-center bg-[#071E1F] outline-none rounded-md px-3 text-white placeholder:text-white'/>
+                                    <input type='text' placeholder='3CCVnxZCsB7ZYuXCznAhpZSEwuFKYdZj7F' className='w-[18.5rem] h-[3rem] mt-3 flex justify-between items-center bg-[#071E1F] outline-none rounded-md px-3 text-white placeholder:text-white' />
 
                                     <button className='mt-6 h-[3.5rem] bg-[#135960] w-[80%] rounded-md'>Withdraw</button>
                                 </div>
