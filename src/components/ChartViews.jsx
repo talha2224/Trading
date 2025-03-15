@@ -11,18 +11,18 @@ const options = {
         toolbar: {
             show: false,
         },
-        background: "transparent", // Matches your theme
+        background: "transparent",
     },
     xaxis: {
         type: "numeric",
-        labels: { show: false }, // Removes X-axis labels
-        axisTicks: { show: false }, // Removes X-axis ticks
-        axisBorder: { show: false }, // Removes X-axis border
+        labels: { show: false },
+        axisTicks: { show: false },
+        axisBorder: { show: false },
     },
     yaxis: {
-        labels: { show: false }, // Removes Y-axis labels
-        axisTicks: { show: false }, // Removes Y-axis ticks
-        axisBorder: { show: false }, // Removes Y-axis border
+        labels: { show: false },
+        axisTicks: { show: false },
+        axisBorder: { show: false }
     },
     grid: {
         borderColor: "#ccc",
@@ -30,15 +30,18 @@ const options = {
     },
     markers: {
         size: 5,
-        colors: ["#FF3D00"], // Red points
+        colors: ["#FF3D00"],
+    },
+    tooltip: {
+        theme: "dark",
     },
 };
 const series = [
     {
         name: "Volume",
         data: Array.from({ length: 40 }, () => [
-            Math.floor(Math.random() * 50), // Random X-axis values
-            Math.floor(Math.random() * 100), // Random Y-axis values
+            Math.floor(Math.random() * 50),
+            Math.floor(Math.random() * 100),
         ]),
     },
 ];
