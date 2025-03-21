@@ -24,6 +24,8 @@ import { ImCross } from "react-icons/im";
 import { LuTimerReset } from "react-icons/lu";
 import Chart from "react-apexcharts";
 
+import { useNavigate } from 'react-router-dom';
+
 
 const options = {
   chart: {
@@ -103,6 +105,17 @@ const UserHome = ({ settradeType, tradeType }) => {
   const [showOpne, setshowOpne] = useState(false)
   const [showClose, setshowClose] = useState(false)
   const [currentIndex, setCurrentIndex] = useState(0)
+
+  
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    // Remove the token from local storage
+    localStorage.clear()
+    
+    // Navigate to the home page
+    navigate('/');
+  };
 
   const arr = [1]
 
@@ -248,6 +261,10 @@ const UserHome = ({ settradeType, tradeType }) => {
           <button onClick={() => { setType("buy") }} className={`w-[8rem] h-[2.5rem] rounded-md ${type === "buy" && "bg-[#01B28B]"}`}>Buy</button>
           <button onClick={() => { setType("sell") }} className={`w-[8rem] h-[2.5rem] rounded-md text-[#c4c4c4] ${type === "sell" && "bg-[#FF5757]"} `}>Sell</button>
         </div>
+
+        <button onClick={handleLogout} className="w-[15rem] h-[2.5rem] rounded-md bg-[#FF5757] mt-4">
+          Logout
+        </button>
 
 
         <div className='mt-4'>
@@ -512,14 +529,19 @@ const UserHome = ({ settradeType, tradeType }) => {
                       </div>
                     </div>
                   </div>
+                       
 
                 </div>
 
               </div>
             </div>
           </div>
+
+          
         )
       }
+
+
 
 
     </div>
