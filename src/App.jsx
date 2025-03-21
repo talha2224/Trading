@@ -19,6 +19,7 @@ import Membership from './pages/Users/Membership';
 import Calculate from './pages/Users/Calculate';
 import Video from './pages/Users/Video';
 import ProtectedRoute from './components/ProtctedRoute';
+import ResetPage from './pages/Users/ResetPassword';
 
 function App() {
   const [openNav, setOpenNav] = useState(true);
@@ -30,6 +31,7 @@ function App() {
       <Route path="/" element={<UserLoginPage />} />
       <Route path="/register" element={<UserRegisterPage />} />
       <Route path="/forgot" element={<ForgotPage />} />
+      <Route path="/reset/:id" element={<ResetPage/>} />
 
       {/* Protected routes */}
       <Route

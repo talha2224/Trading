@@ -29,6 +29,49 @@ const initialState = {
           loading: false,
           error: action.payload, // Update error message
         };
+
+        
+        case 'auth/forgotPassword/pending':
+            return {
+              ...state,
+              loading: true,
+              error: null,
+            };
+          case 'auth/forgotPassword/fulfilled':
+            return {
+              ...state,
+              loading: false,
+              error: null,
+            };
+          case 'auth/forgotPassword/rejected':
+            return {
+              ...state,
+              loading: false,
+              error: action.payload,
+            };
+          
+
+
+            
+            case 'auth/resetPassword/pending':
+      return {
+        ...state,
+        loading: true,
+        error: null,
+      };
+    case 'auth/resetPassword/fulfilled':
+      return {
+        ...state,
+        loading: false,
+        error: null,
+      };
+    case 'auth/resetPassword/rejected':
+      return {
+        ...state,
+        loading: false,
+        error: action.payload,
+      };
+    
   
       // Handle other actions (LOGIN, LOGOUT, etc.)
       default:

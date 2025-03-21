@@ -46,3 +46,35 @@ export const logoutUser = () => (dispatch) => {
   dispatch(logout());
   toast.info("Logged out successfully!");
 };
+
+export const forgotPassword = createAsyncThunk(
+    'auth/forgotPassword',
+    async ({ email }, { rejectWithValue }) => {
+      try {
+        const response = await axios.post('http://localhost:5000/api/users/forgotPassword', {
+          email,
+        });
+        toast.success('Password reset email sent!');
+        return response.data;
+      } catch (error) {
+        toast.error(error.response?.data?.message || 'Error sending password reset email');
+        return rejectWithValue(error.response?.data?.message || 'Error sending password reset email');
+      }
+    }
+  );
+
+  export const resetPassword = createAsyncThunk(
+    'auth/resetPassword',
+    async ({ token, password }, { rejectWithValue }) => {
+      try {
+        const response = await axios.post(`http://localhost:5000/api/users/resetPassword/${token}`, {
+          password: password,
+        });
+        toast.success('Password reset successful!');
+        return response.data;
+      } catch (error) {
+        toast.error(error.response?.data?.message || 'Error resetting password');
+        return rejectWithValue(error.response?.data?.message || 'Error resetting password');
+      }
+    }
+  );
