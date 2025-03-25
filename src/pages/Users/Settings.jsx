@@ -2,13 +2,51 @@ import React, { useState } from 'react'
 import LoginNavbar from '../../components/Users/LoginNavbar'
 import { FaChevronDown, FaChevronUp } from "react-icons/fa";
 import { BsThreeDotsVertical } from 'react-icons/bs';
+import axios from 'axios';
+import { toast } from 'react-toastify'; // Import Toastify
+import 'react-toastify/dist/ReactToastify.css';
+import { useNavigate } from 'react-router-dom';
 
 const Settings = () => {
-
+    const navigate = useNavigate();
     const [showSub, setShowSub] = useState("profile")
     const [currentIndex, setCurrentIndex] = useState(0)
     const arr = [1, 2, 3, 4, 5, 6, 7, 8, 9]
 
+    
+    const handleCloseAccount = async () => {
+        try {
+            const token = localStorage.getItem('token'); // Get JWT token
+
+            if (!token) {
+                toast.error('User not authenticated'); // Show error toast
+                return;
+            }
+
+            // Call the API to close the account
+            await axios.delete('http://localhost:5000/api/users/deleteaccount', {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+
+            // Clear local storage
+            localStorage.clear();
+
+            // Show success toast
+            toast.success('Your account has been closed successfully');
+
+            setTimeout(() => {
+                navigate('/');
+            }, 2000);
+
+            // Redirect to home page after short delay
+           // 2-second delay for user to see message
+        } catch (error) {
+            console.error('Error closing account:', error);
+            toast.error('Failed to close account. Please try again.');
+        }
+    };
     return (
 
 
@@ -524,30 +562,32 @@ const Settings = () => {
 
 
                     {
-                        currentIndex == 8 && (
-
-                            <div>
-
-                                <h1 className='text-2xl border-b border-[#103147] pb-4'>Manage Account Settings</h1>
-
-                                <p className='my-3 leading-9'>
-                                    Are you sure? <br />
-                                    If you close your account: <br />
-                                    You can't trade on Deriv. <br />
-                                    You can't make transactions. <br />
-                                    Before closing your account: <br />
-                                    Close all your positions. <br />
-                                    Withdraw your funds. <br />
-                                    We shall delete your personal information as soon as our legal obligations are met, as mentioned in the section on Data Retention in our Security and privacy policy
-                                </p>
-
-                                <div className='flex justify-end items-center gap-x-5'>
-                                    <button className='border border-[#135960] h-[3rem] rounded-md w-[15rem] mt-4 block mb-5'>Close</button>
-                                    <button className='bg-[#135960] h-[3rem] rounded-md w-[15rem] mt-4 block mb-5'>Close my account</button>
+                            currentIndex === 8 && (
+                                <div>
+                                    <h1 className='text-2xl border-b border-[#103147] pb-4'>Manage Account Settings</h1>
+                                    <p className='my-3 leading-9'>
+                                        Are you sure? <br />
+                                        If you close your account: <br />
+                                        You can't trade on Deriv. <br />
+                                        You can't make transactions. <br />
+                                        Before closing your account: <br />
+                                        Close all your positions. <br />
+                                        Withdraw your funds. <br />
+                                        We shall delete your personal information as soon as our legal obligations are met, as mentioned in the section on Data Retention in our Security and privacy policy.
+                                    </p>
+                                    <div className='flex justify-end items-center gap-x-5'>
+                                        <button className='border border-[#135960] h-[3rem] rounded-md w-[15rem] mt-4 block mb-5'>
+                                            Close
+                                        </button>
+                                        <button 
+                                            className='bg-[#135960] h-[3rem] rounded-md w-[15rem] mt-4 block mb-5' 
+                                            onClick={handleCloseAccount}
+                                        >
+                                            Close my account
+                                        </button>
+                                    </div>
                                 </div>
-
-                            </div>
-                        )
+                            )
                     }
 
 
