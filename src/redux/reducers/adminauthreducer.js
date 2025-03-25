@@ -1,9 +1,14 @@
+// reducers/adminReducer.js
 const initialState = {
+    
     admin: null,
     token: localStorage.getItem("adminToken") || null,
-    isAuthenticated: !!localStorage.getItem("adminToken"), // Initialize based on localStorage
+    isAuthenticated: !!localStorage.getItem("adminToken"),
     error: null,
-};
+    users: [],
+    loading: false,
+    createUserLoading: false
+  };
 
 const adminReducer = (state = initialState, action) => {
     switch (action.type) {
@@ -48,6 +53,49 @@ const adminReducer = (state = initialState, action) => {
                 isAuthenticated: false,
                 error: null,
             };
+
+            case 'FETCH_USERS_REQUEST':
+                return {
+                  ...state,
+                  loading: true,
+                  error: null
+                };
+                
+              case 'FETCH_USERS_SUCCESS':
+                return {
+                  ...state,
+                  loading: false,
+                  users: action.payload,
+                  error: null
+                };
+                
+              case 'FETCH_USERS_FAILURE':
+                return {
+                  ...state,
+                  loading: false,
+                  error: action.payload
+                };
+                
+              case 'CREATE_USER_REQUEST':
+                return {
+                  ...state,
+                  createUserLoading: true,
+                  error: null
+                };
+                
+              case 'CREATE_USER_SUCCESS':
+                return {
+                  ...state,
+                  createUserLoading: false,
+                  error: null
+                };
+                
+              case 'CREATE_USER_FAILURE':
+                return {
+                  ...state,
+                  createUserLoading: false,
+                  error: action.payload
+                };
 
         default:
             return state; // Return the current state for unknown actions

@@ -3,6 +3,7 @@ import { FaAngleUp, FaCalendarAlt, FaCamera, FaStopwatch } from "react-icons/fa"
 import { BiDownArrow, BiSolidDownArrow } from "react-icons/bi";
 import { FaMagnifyingGlassPlus, FaMagnifyingGlassMinus } from "react-icons/fa6";
 import { RiFocus3Fill } from "react-icons/ri";
+import axios from 'axios';
 import { LuExpand } from "react-icons/lu";
 import Icon1 from '../../assets/icon1.svg'
 import Icon2 from '../../assets/icon2.png'
@@ -109,13 +110,35 @@ const UserHome = ({ settradeType, tradeType }) => {
   
   const navigate = useNavigate();
 
-  const handleLogout = () => {
-    // Remove the token from local storage
-    localStorage.clear()
-    
-    // Navigate to the home page
-    navigate('/');
+
+
+  const handleCompleteLogout = async () => {
+    try {
+      // 1. First try server-side logout
+      const response = await axios.post('http://localhost:5000/api/users/logout', {}, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`
+        }
+      });
+      
+      if (!response.data.success) {
+        throw new Error(response.data.message || 'Logout failed');
+      }
+    } catch (error) {
+      console.error('Server logout error:', error.message);
+      // Continue with client-side cleanup even if server logout fails
+    } finally {
+      // 2. Clear all client-side data
+      localStorage.clear();
+      
+      // 3. Reset application state (if using context/state management)
+      
+      
+      // 4. Redirect to home page
+      navigate('/');
+    }
   };
+  // Usage in your button:
 
   const arr = [1]
 
@@ -262,7 +285,7 @@ const UserHome = ({ settradeType, tradeType }) => {
           <button onClick={() => { setType("sell") }} className={`w-[8rem] h-[2.5rem] rounded-md text-[#c4c4c4] ${type === "sell" && "bg-[#FF5757]"} `}>Sell</button>
         </div>
 
-        <button onClick={handleLogout} className="w-[15rem] h-[2.5rem] rounded-md bg-[#FF5757] mt-4">
+        <button onClick={handleCompleteLogout}  className="w-[15rem] h-[2.5rem] rounded-md bg-[#FF5757] mt-4">
           Logout
         </button>
 
