@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
+
 const LoginPage = () => {
   const dispatch = useDispatch();
   const nav = useNavigate();
@@ -31,16 +32,17 @@ const LoginPage = () => {
       toast.error("Please enter email and password");
       return;
     }
-
-    setIsLoggingIn(true); // Set logging in state to true
-
+  
+    setIsLoggingIn(true);
+  
     const credentials = {
       email: formData.email,
       password: formData.password,
     };
-
+  
     try {
-      const response = await dispatch(loginUser(credentials)).unwrap(); // Ensure correct usage
+      const response = await dispatch(loginUser(credentials)).unwrap();
+      console.log("Login response:", response); // Debugging line
       toast.success("Login successful! Redirecting...");
       setTimeout(() => {
         nav("/user/home");
@@ -48,16 +50,13 @@ const LoginPage = () => {
     } catch (err) {
       toast.error(`Login failed: ${err.message || "Invalid credentials"}`);
     } finally {
-      setIsLoggingIn(false); // Reset logging in state
+      setIsLoggingIn(false);
     }
   };
 
   // Reset the button state if loading or error changes
-  useEffect(() => {
-    if (!loading && !error) {
-      setIsLoggingIn(false);
-    }
-  }, [loading, error]);
+  
+  
 
   return (
     <div>

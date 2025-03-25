@@ -18,10 +18,11 @@ export const loginUser = createAsyncThunk(
       });
 
       const data = await response.json();
+      console.log("API Response:", data); // Debugging line
       if (!response.ok) {
         return rejectWithValue(data.message);
       }
-      return { token: data.token, user: data.user };
+      return { token: data.token, user: data.user }; // Ensure this matches the response
     } catch (error) {
       return rejectWithValue("Login failed");
     }

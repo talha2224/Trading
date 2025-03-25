@@ -1,11 +1,11 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { loginUser } from "./actions/authactions";
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { createSlice } from "@reduxjs/toolkit";
+import { loginUser } from "./actions/authactions"; // Ensure the correct import path
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const initialState = {
   loading: false,
-  token: localStorage.getItem("token") || null,
+  token: localStorage.getItem("token") || null, // Initialize token from localStorage
   user: null,
   error: null,
 };
@@ -17,7 +17,7 @@ const authSlice = createSlice({
     logout: (state) => {
       state.token = null;
       state.user = null;
-      localStorage.removeItem("token");
+      localStorage.removeItem("token"); // Clear token from localStorage on logout
     },
   },
   extraReducers: (builder) => {
@@ -28,10 +28,11 @@ const authSlice = createSlice({
       })
       .addCase(loginUser.fulfilled, (state, action) => {
         state.loading = false;
-        state.token = action.payload.token;
-        state.user = action.payload.user;
+        state.token = action.payload.token; // Set token from the action payload
+        state.user = action.payload.user; // Set user from the action payload
         state.error = null;
-        localStorage.setItem("token", action.payload.token);
+        localStorage.setItem("token", action.payload.token); // Save token to localStorage
+        console.log("Token set in Redux state:", action.payload.token); // Debugging line
         toast.success("Login successful!");
       })
       .addCase(loginUser.rejected, (state, action) => {

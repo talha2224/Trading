@@ -20,6 +20,7 @@ import Calculate from './pages/Users/Calculate';
 import Video from './pages/Users/Video';
 import ProtectedRoute from './components/ProtctedRoute';
 import ResetPage from './pages/Users/ResetPassword';
+import ProtectedRouteAdmin from './components/ProtectedRouteAdmin'; // Import the admin protected route
 
 function App() {
   const [openNav, setOpenNav] = useState(true);
@@ -31,9 +32,9 @@ function App() {
       <Route path="/" element={<UserLoginPage />} />
       <Route path="/register" element={<UserRegisterPage />} />
       <Route path="/forgot" element={<ForgotPage />} />
-      <Route path="/reset/:id" element={<ResetPage/>} />
+      <Route path="/reset/:id" element={<ResetPage />} />
 
-      {/* Protected routes */}
+      {/* Protected routes for users */}
       <Route
         path="/user/"
         element={
@@ -58,7 +59,11 @@ function App() {
       {/* Admin routes */}
       <Route path="/admin/login" element={<LoginPage />} />
       <Route path="/admin/register" element={<RegisterPage />} />
-      <Route path="/admin/home" element={<HomePage />} />
+
+      {/* Protected admin routes */}
+      <Route element={<ProtectedRouteAdmin />}>
+        <Route path="/admin/home" element={<HomePage />} />
+      </Route>
     </Routes>
   );
 }
