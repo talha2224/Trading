@@ -72,6 +72,39 @@ const initialState = {
         error: action.payload,
       };
     
+      case "auth/loginUser/pending":
+      return { ...state, loading: true, error: null };
+      
+    case "auth/loginUser/fulfilled":
+      return {
+        ...state,
+        loading: false,
+        ...(action.payload.twoFactorRequired 
+          ? { tempToken: action.payload.tempToken } 
+          : { token: action.payload.token, user: action.payload.user }
+        ),
+        error: null
+      };
+      
+    case "auth/loginUser/rejected":
+      return { ...state, loading: false, error: action.payload };
+      
+    // Handle 2FA verification cases
+    case "auth/verifyTwoFactor/pending":
+      return { ...state, loading: true, error: null };
+      
+    case "auth/verifyTwoFactor/fulfilled":
+      return {
+        ...state,
+        loading: false,
+        token: action.payload.token,
+        user: action.payload.user,
+        error: null
+      };
+      
+    case "auth/verifyTwoFactor/rejected":
+      return { ...state, loading: false, error: action.payload };
+      
   
       // Handle other actions (LOGIN, LOGOUT, etc.)
       default:

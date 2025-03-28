@@ -11,23 +11,26 @@ export const loginUser = createAsyncThunk(
   "auth/loginUser",
   async (credentials, { rejectWithValue }) => {
     try {
-      const response = await fetch("http://localhost:5000/api/users/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(credentials),
-      });
-
-      const data = await response.json();
-      console.log("API Response:", data); // Debugging line
-      if (!response.ok) {
-        return rejectWithValue(data.message);
+      const response = await axios.post("http://localhost:5000/api/users/login", credentials);
+      
+      // If 2FA is required, return the tempToken
+      if (response.data.twoFactorRequired) {
+        return { 
+          twoFactorRequired: true,
+          tempToken: response.data.tempToken 
+        };
       }
-      return { token: data.token, user: data.user }; // Ensure this matches the response
+      
+      // For normal login, return token and user
+      localStorage.setItem('token', response.data.token);
+      return { token: response.data.token, user: response.data.user };
+      
     } catch (error) {
-      return rejectWithValue("Login failed");
+      return rejectWithValue(error.response?.data?.message || "Login failed");
     }
   }
 );
+
 
   
 export const registerUser = createAsyncThunk(
@@ -79,3 +82,23 @@ export const forgotPassword = createAsyncThunk(
       }
     }
   );
+
+  // authactions.js
+// authactions.js
+export const verifyTwoFactor = createAsyncThunk(
+  "auth/verifyTwoFactor",
+  async ({ tempToken, twoFactorToken }, { rejectWithValue }) => {
+    try {
+      const response = await axios.post('http://localhost:5000/api/users/2fa/verify-login', {
+        tempToken,
+        twoFactorToken
+      });
+
+      localStorage.setItem('token', response.data.token);
+      return response.data;
+      
+    } catch (error) {
+      return rejectWithValue(error.response?.data?.message || '2FA verification failed');
+    }
+  }
+);

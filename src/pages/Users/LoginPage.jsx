@@ -1,12 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { loginUser } from '../../redux/actions/authactions'; // Import the login action
+import { loginUser, verifyTwoFactor } from '../../redux/actions/authactions';
 import Navbar from '../../components/Users/Navbar';
 import Candle from '../../assets/candle.png';
 import { useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
 
 const LoginPage = () => {
   const dispatch = useDispatch();
@@ -16,9 +15,12 @@ const LoginPage = () => {
   const [formData, setFormData] = useState({
     email: '',
     password: '',
+    twoFactorToken: ''
   });
 
-  const [isLoggingIn, setIsLoggingIn] = useState(false); // Track login state
+  const [isLoggingIn, setIsLoggingIn] = useState(false);
+  const [requires2FA, setRequires2FA] = useState(false);
+  const [tempToken, setTempToken] = useState('');
 
   const handleChange = (e) => {
     setFormData({
@@ -35,28 +37,38 @@ const LoginPage = () => {
   
     setIsLoggingIn(true);
   
-    const credentials = {
-      email: formData.email,
-      password: formData.password,
-    };
-  
     try {
-      const response = await dispatch(loginUser(credentials)).unwrap();
-      console.log("Login response:", response); // Debugging line
-      toast.success("Login successful! Redirecting...");
-      setTimeout(() => {
+      if (requires2FA) {
+        // Handle 2FA verification
+        const result = await dispatch(verifyTwoFactor({
+          tempToken,
+          twoFactorToken: formData.twoFactorToken
+        })).unwrap();
+        
+        toast.success("Login successful! Redirecting...");
         nav("/user/home");
-      }, 2000);
+      } else {
+        // Initial login attempt
+        const result = await dispatch(loginUser({
+          email: formData.email,
+          password: formData.password
+        })).unwrap();
+        
+        if (result.twoFactorRequired) {
+          setTempToken(result.tempToken);
+          setRequires2FA(true);
+          toast.info("Please enter your 2FA code");
+        } else {
+          toast.success("Login successful! Redirecting...");
+          nav("/user/home");
+        }
+      }
     } catch (err) {
-      toast.error(`Login failed: ${err.message || "Invalid credentials"}`);
+      toast.error(err || "Authentication failed");
     } finally {
       setIsLoggingIn(false);
     }
   };
-
-  // Reset the button state if loading or error changes
-  
-  
 
   return (
     <div>
@@ -74,8 +86,10 @@ const LoginPage = () => {
             onChange={handleChange}
             required={true}
             className='w-[100%] sm:w-[25rem] h-[3rem] rounded-md px-3 border border-[#0E2F44] bg-transparent outline-none'
+            disabled={requires2FA}
           />
         </div>
+
         <div className='w-[100%] sm:w-fit'>
           <p className='mt-4 mb-2'>Password</p>
           <input
@@ -85,14 +99,32 @@ const LoginPage = () => {
             onChange={handleChange}
             required={true}
             className='w-[100%] sm:w-[25rem] h-[3rem] rounded-md px-3 border border-[#0E2F44] bg-transparent outline-none'
+            disabled={requires2FA}
           />
         </div>
+
+        {requires2FA && (
+          <div className='w-[100%] sm:w-fit'>
+            <p className='mt-4 mb-2'>2FA Code</p>
+            <input
+              type='text'
+              name='twoFactorToken'
+              value={formData.twoFactorToken}
+              onChange={handleChange}
+              required={true}
+              placeholder='Enter 6-digit code'
+              className='w-[100%] sm:w-[25rem] h-[3rem] rounded-md px-3 border border-[#0E2F44] bg-transparent outline-none'
+            />
+          </div>
+        )}
+
         <p onClick={() => nav('/forgot')} className='mt-3 w-[100%] sm:w-[25rem] text-end cursor-pointer'>
           Forgot Password
         </p>
+
         <button
           onClick={handleSubmit}
-          disabled={isLoggingIn} // Use isLoggingIn to disable the button
+          disabled={isLoggingIn}
           className='mt-6 w-[100%] sm:w-[25rem] h-[3rem] bg-[#135960] block'
         >
           {isLoggingIn ? 'Signing In...' : 'Sign In'}
@@ -102,7 +134,6 @@ const LoginPage = () => {
       <img src={Candle} alt='' className='fixed bottom-[30%] left-0 -z-50' />
       <img src={Candle} alt='' className='fixed bottom-[30%] right-0 -z-50' />
 
-      {/* Add ToastContainer for toast notifications */}
       <ToastContainer
         position='top-right'
         autoClose={5000}
