@@ -17,12 +17,71 @@ const Settings = () => {
     const [qrCodeData, setQrCodeData] = useState('');
     const [secret, setSecret] = useState('');
     const [tokens, setTokens] = useState('');
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState('');
+  
     const [success, setSuccess] = useState('');
-    
-    // Corrected Redux selector
+    const [loginHistory, setLoginHistory] = useState([]);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
+    const [totalPages, setTotalPages] = useState(1);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [filterStatus, setFilterStatus] = useState('');
+  
+    // Get auth state from Redux
     const token = useSelector((state) => state.auth.token);
+    const user = useSelector((state) => state.auth.user);
+  
+   
+    useEffect(() => {
+        const fetchLoginHistory = async (page = 1) => {
+          if (!token || !user?.id) {
+            console.log("Missing token or user ID");
+            return;
+          }
+          
+          try {
+            setLoading(true);
+            setError(null);
+      
+            // Ensure we're using the same ID format as the backend expects
+            const userId = user.id || user._id; // Handle both cases
+            
+            let url = `http://localhost:5000/api/users/${userId}/loginhistory?page=${page}`;
+            if (filterStatus) {
+              url += `&status=${filterStatus}`;
+            }
+      
+            const response = await axios.get(url, {
+              headers: {
+                Authorization: `Bearer ${token}`,
+                'Content-Type': 'application/json'
+              }
+            });
+      
+            console.log("API Response:", response.data);
+            setLoginHistory(response.data.loginHistory || []);
+            setTotalPages(response.data.totalPages || 1);
+            setCurrentPage(response.data.currentPage || 1);
+          } catch (err) {
+            console.error('Error:', err);
+            const errorMsg = err.response?.data?.message || err.message;
+            setError(errorMsg);
+            toast.error(errorMsg);
+            
+            // Debug unauthorized errors
+            if (err.response?.status === 403) {
+              console.log("Token user ID:", user.id);
+              console.log("Requested user ID:", err.response?.data?.details?.tokenUserId);
+            }
+          } finally {
+            setLoading(false);
+          }
+        };
+      
+        if (currentIndex === 6 && user?.id && token) {
+          fetchLoginHistory(currentPage);
+        }
+      }, [currentIndex, user?.id, user?._id, token, filterStatus, currentPage]);
+   
     
     useEffect(() => {
         const generateSecret = async () => {
@@ -587,28 +646,95 @@ const Settings = () => {
                         currentIndex == 6 && (
 
                             <div>
-                                <h1 className='text-2xl border-b border-[#103147] pb-4'>Manage Account Settings</h1>
-                                <div className='py-5 rounded-md w-[100%] mb-4 overflow-hidden'>
-                                    <div className='flex justify-between items-center border-b border-[#103147] pb-4'>
-                                        <p className='text-[#6E7975] flex-1 min-w-[10rem] mr-1'>Date & Time</p>
-                                        <p className='text-[#6E7975] flex-1 min-w-[10rem] mr-1'>Action</p>
-                                        <p className='text-[#6E7975] flex-1 min-w-[10rem] mr-1'>Browser</p>
-                                        <p className='text-[#6E7975] flex-1 min-w-[10rem] mr-1'>Ip address</p>
-                                        <p className='text-[#6E7975] flex-1 min-w-[10rem] mr-1'>Status</p>
-                                    </div>
-                                    {
-                                        arr.map((i) => (
-                                            <div key={i} className='flex justify-between items-center mt-4 border-b border-[#103147] pb-4'>
-                                                <p className=' flex-1 min-w-[10rem] mr-1 truncate'>2024-04-12 21:26:21 GMT</p>
-                                                <p className=' flex-1 min-w-[10rem] mr-1 truncate'>Login</p>
-                                                <p className=' flex-1 min-w-[10rem] mr-1 truncate'>Chrome</p>
-                                                <p className=' flex-1 min-w-[10rem] mr-1 truncate'>146.70.99.167</p>
-                                                <p className=' flex-1 min-w-[10rem] mr-1 truncate'>Successful</p>
-                                            </div>
-                                        ))
-                                    }
-                                </div>
-                            </div>
+      <h1 className='text-2xl border-b border-[#103147] pb-4'>Manage Account Settings</h1>
+      <div className='py-5 rounded-md w-[100%] mb-4 overflow-hidden'>
+        
+        {/* Filter Controls */}
+        <div className="mb-4 flex items-center">
+          <label className="mr-2">Filter by status:</label>
+          <select
+            value={filterStatus}
+            onChange={(e) => setFilterStatus(e.target.value)}
+            className="border rounded px-3 py-1"
+            disabled={loading}
+          >
+            <option value="">All</option>
+            <option value="success">Successful</option>
+            <option value="failed">Failed</option>
+            <option value="2fa_required">2FA Required</option>
+          </select>
+        </div>
+
+        {/* Table Header */}
+        <div className='flex justify-between items-center border-b border-[#103147] pb-4'>
+          <p className='text-[#6E7975] flex-1 min-w-[10rem] mr-1'>Date & Time</p>
+          <p className='text-[#6E7975] flex-1 min-w-[10rem] mr-1'>Action</p>
+          <p className='text-[#6E7975] flex-1 min-w-[10rem] mr-1'>Browser</p>
+          <p className='text-[#6E7975] flex-1 min-w-[10rem] mr-1'>IP Address</p>
+          <p className='text-[#6E7975] flex-1 min-w-[10rem] mr-1'>Status</p>
+        </div>
+        
+        {/* Table Content */}
+        {loading ? (
+          <div className="flex justify-center items-center h-32">
+            <p>Loading login history...</p>
+          </div>
+        ) : error ? (
+          <div className="text-red-500 p-4">
+            Error: {error}
+          </div>
+        ) : loginHistory.length === 0 ? (
+          <div className="text-center p-4">
+            No login history records found
+          </div>
+        ) : (
+          loginHistory.map((entry) => (
+            <div key={entry._id} className='flex justify-between items-center mt-4 border-b border-[#103147] pb-4'>
+              <p className='flex-1 min-w-[10rem] mr-1 truncate'>
+                {new Date(entry.attemptTime).toLocaleString()}
+              </p>
+              <p className='flex-1 min-w-[10rem] mr-1 truncate'>
+                Login
+              </p>
+              <p className='flex-1 min-w-[10rem] mr-1 truncate'>
+                {entry.browser || 'Unknown'} {entry.os ? `(${entry.os})` : ''}
+              </p>
+              <p className='flex-1 min-w-[10rem] mr-1 truncate'>
+                {entry.ipAddress}
+              </p>
+              <p className={`flex-1 min-w-[10rem] mr-1 truncate ${
+                entry.status === 'success' ? 'text-green-500' : 
+                entry.status === 'failed' ? 'text-red-500' : 'text-yellow-500'
+              }`}>
+                {entry.status === 'success' ? 'Successful' : 
+                 entry.status === 'failed' ? `Failed${entry.failureReason ? ` (${entry.failureReason})` : ''}` : 
+                 '2FA Required'}
+              </p>
+            </div>
+          ))
+        )}
+        
+        {/* Pagination */}
+        {totalPages > 1 && (
+          <div className="flex justify-center mt-4">
+            {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+              <button
+                key={page}
+                onClick={() => fetchLoginHistory(page)}
+                className={`mx-1 px-3 py-1 rounded ${
+                  currentPage === page 
+                    ? 'bg-blue-500 text-white' 
+                    : 'bg-gray-200 hover:bg-gray-300'
+                }`}
+                disabled={loading}
+              >
+                {page}
+              </button>
+            ))}
+          </div>
+        )}
+      </div>
+    </div>
                         )
                     }
 
