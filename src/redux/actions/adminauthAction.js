@@ -3,7 +3,7 @@ import axios from 'axios';
 
 export const registerAdmin = (adminData) => async (dispatch) => {
     try {
-        const response = await axios.post('http://localhost:5000/api/admin/create', adminData);
+        const response = await axios.post('https://backend-nine-tau-59.vercel.app/api/admin/create', adminData);
         dispatch({ type: 'REGISTER_ADMIN_SUCCESS', payload: response.data });
     } catch (error) {
         dispatch({ type: 'REGISTER_ADMIN_FAILURE', payload: error.message });
@@ -13,7 +13,7 @@ export const registerAdmin = (adminData) => async (dispatch) => {
 
 export const loginAdmin = (email, password) => async (dispatch) => {
     try {
-        const response = await axios.post('http://localhost:5000/api/admin/login', { email, password });
+        const response = await axios.post('https://backend-nine-tau-59.vercel.app/api/admin/login', { email, password });
         console.log("Login Response:", response.data);
 
         localStorage.setItem("adminToken", response.data.token); // Store token
@@ -42,7 +42,7 @@ export const fetchUsers = () => async (dispatch, getState) => {
     try {
       const { token } = getState().adminAuth;
       
-      const response = await axios.get('http://localhost:5000/api/admin/getUser', {
+      const response = await axios.get('https://backend-nine-tau-59.vercel.app/api/admin/getUser', {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -69,7 +69,7 @@ export const fetchUsers = () => async (dispatch, getState) => {
       console.log('Using token:', token);
   
       const response = await axios.post(
-        'http://localhost:5000/api/admin/createUser',
+        'https://backend-nine-tau-59.vercel.app/api/admin/createUser',
         userData,
         {
           headers: {

@@ -11,7 +11,7 @@ export const loginUser = createAsyncThunk(
   "auth/loginUser",
   async (credentials, { rejectWithValue }) => {
     try {
-      const response = await axios.post("http://localhost:5000/api/users/login", credentials);
+      const response = await axios.post("https://backend-nine-tau-59.vercel.app/api/users/login", credentials);
       
       // If 2FA is required, return the tempToken
       if (response.data.twoFactorRequired) {
@@ -37,7 +37,7 @@ export const registerUser = createAsyncThunk(
     "auth/registerUser",
     async (userData, { rejectWithValue }) => {
       try {
-        const response = await axios.post("http://localhost:5000/api/users/signup", userData);
+        const response = await axios.post("https://backend-nine-tau-59.vercel.app/api/users/signup", userData);
         toast.success("Registration successful!");
         return response.data; // Return the response data (token and user)
       } catch (error) {
@@ -55,7 +55,7 @@ export const forgotPassword = createAsyncThunk(
     'auth/forgotPassword',
     async ({ email }, { rejectWithValue }) => {
       try {
-        const response = await axios.post('http://localhost:5000/api/users/forgotPassword', {
+        const response = await axios.post('https://backend-nine-tau-59.vercel.app/api/users/forgotPassword', {
           email,
         });
         toast.success('Password reset email sent!');
@@ -71,7 +71,7 @@ export const forgotPassword = createAsyncThunk(
     'auth/resetPassword',
     async ({ token, password }, { rejectWithValue }) => {
       try {
-        const response = await axios.post(`http://localhost:5000/api/users/resetPassword/${token}`, {
+        const response = await axios.post(`https://backend-nine-tau-59.vercel.app/api/users/resetPassword/${token}`, {
           password: password,
         });
         toast.success('Password reset successful!');
@@ -89,7 +89,7 @@ export const verifyTwoFactor = createAsyncThunk(
   "auth/verifyTwoFactor",
   async ({ tempToken, twoFactorToken }, { rejectWithValue }) => {
     try {
-      const response = await axios.post('http://localhost:5000/api/users/2fa/verify-login', {
+      const response = await axios.post('https://backend-nine-tau-59.vercel.app/api/users/2fa/verify-login', {
         tempToken,
         twoFactorToken
       });

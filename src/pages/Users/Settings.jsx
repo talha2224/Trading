@@ -98,7 +98,7 @@ const [backPreview, setBackPreview] = useState(null);
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/users/getuserprofiledata', {
+        const response = await axios.get('https://backend-nine-tau-59.vercel.app/api/users/getuserprofiledata', {
           headers: {
             Authorization: `Bearer ${localStorage.getItem('token')}`
           }
@@ -134,7 +134,7 @@ const [backPreview, setBackPreview] = useState(null);
   const handleSubmitprofile = async () => {
     try {
       setLoading(true);
-      const response = await axios.post('http://localhost:5000/api/users/saveprofiledata', formDatas, {
+      const response = await axios.post('https://backend-nine-tau-59.vercel.app/api/users/saveprofiledata', formDatas, {
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${localStorage.getItem('token')}`
@@ -177,7 +177,7 @@ const handleSubmitdoc = async () => {
 
   try {
     setLoading(true);
-    const response = await axios.post('http://localhost:5000/api/docs/identity/upload', formData, {
+    const response = await axios.post('https://backend-nine-tau-59.vercel.app/api/docs/identity/upload', formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
         Authorization: `Bearer ${localStorage.getItem('token')}`
@@ -225,7 +225,7 @@ const handleSubmitfiles = async () => {
 
   try {
     setLoading(true);
-    const response = await axios.post('http://localhost:5000/api/docs/upload', formData, {
+    const response = await axios.post('https://backend-nine-tau-59.vercel.app/api/docs/upload', formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
         Authorization: `Bearer ${localStorage.getItem('token')}`
@@ -254,7 +254,7 @@ const handleEmailChange = async () => {
   try {
     setEmailLoading(true);
     const response = await axios.put(
-      'http://localhost:5000/api/users/changeemail',
+      'https://backend-nine-tau-59.vercel.app/api/users/changeemail',
       emailForm,
       {
         headers: {
@@ -284,7 +284,7 @@ const handlePasswordChange = async () => {
 
     setPasswordLoading(true);
     const response = await axios.put(
-      'http://localhost:5000/api/users/changepassword',
+      'https://backend-nine-tau-59.vercel.app/api/users/changepassword',
       passwordForm,
       {
         headers: {
@@ -350,7 +350,7 @@ const handlePasswordChange = async () => {
       try {
         setLoading(true);
         const userId = user.id || user._id;
-        let url = `http://localhost:5000/api/users/${userId}/loginhistory?page=${page}`;
+        let url = `https://backend-nine-tau-59.vercel.app/api/users/${userId}/loginhistory?page=${page}`;
         if (filterStatus) url += `&status=${filterStatus}`;
 
         const response = await axios.get(url, {
@@ -385,7 +385,7 @@ const handlePasswordChange = async () => {
         if (!token) throw new Error('No authentication token found');
 
         const response = await axios.post(
-          'http://localhost:5000/api/users/2fa/generate', 
+          'https://backend-nine-tau-59.vercel.app/api/users/2fa/generate', 
           {}, 
           { headers: { Authorization: `Bearer ${token}` } }
         );
@@ -421,7 +421,7 @@ const handleSubmit = async (e) => {
      
       setLimitsLoading(true);
       const response = await axios.post(
-        `http://localhost:5000/api/tradelimit/createtradelimit/${user.id}`,
+        `https://backend-nine-tau-59.vercel.app/api/tradelimit/createtradelimit/${user.id}`,
         formData,
         {
           headers: {
@@ -445,7 +445,7 @@ const handleSubmit = async (e) => {
       console.log(user._id)
       setLimitsLoading(true);
       const response = await axios.post(
-        `http://localhost:5000/api/tradelimit/${user.id}/reset`,
+        `https://backend-nine-tau-59.vercel.app/api/tradelimit/${user.id}/reset`,
         {},
         {
           headers: {
@@ -483,7 +483,7 @@ const handleSubmit = async (e) => {
     try {
       setLimitsLoading(true);
       const response = await axios.get(
-        `http://localhost:5000/api/tradelimit/gettradelimit/${user.id}`,
+        `https://backend-nine-tau-59.vercel.app/api/tradelimit/gettradelimit/${user.id}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -530,7 +530,7 @@ const handleSubmit = async (e) => {
         }
 
         // Call the API to close the account
-        await axios.delete('http://localhost:5000/api/users/deleteaccount', {
+        await axios.delete('https://backend-nine-tau-59.vercel.app/api/users/deleteaccount', {
             headers: {
                 Authorization: `Bearer ${token}`,
             },
@@ -561,7 +561,7 @@ if (!token) {
 
 try {
     setLoading(true);
-    const response = await axios.post('http://localhost:5000/api/users/2fa/verify', { tokens }, {
+    const response = await axios.post('https://backend-nine-tau-59.vercel.app/api/users/2fa/verify', { tokens }, {
         headers: {
             Authorization: `Bearer ${token}`
         }
