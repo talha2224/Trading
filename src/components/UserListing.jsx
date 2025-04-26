@@ -40,28 +40,38 @@ const UserListing = () => {
 
   // Filter, sort and paginate users
   const processedUsers = useMemo(() => {
-    // Filter
-    let filtered = users.filter(user => 
-      user.username.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      user.email.toLowerCase().includes(searchTerm.toLowerCase())
-    );
-
-    // Sort
+    // Filter with null checks
+    let filtered = users.filter(user => {
+      const username = user?.username?.toLowerCase() || '';
+      const email = user?.email?.toLowerCase() || '';
+      const search = searchTerm.toLowerCase();
+      return username.includes(search) || email.includes(search);
+    });
+  
+    // Sort with null checks
     filtered.sort((a, b) => {
-      if (a[sortConfig.key] < b[sortConfig.key]) {
+      const aValue = a[sortConfig.key] || '';
+      const bValue = b[sortConfig.key] || '';
+      
+      if (aValue < bValue) {
         return sortConfig.direction === 'asc' ? -1 : 1;
       }
-      if (a[sortConfig.key] > b[sortConfig.key]) {
+      if (aValue > bValue) {
         return sortConfig.direction === 'asc' ? 1 : -1;
       }
       return 0;
     });
-
+  
     // Paginate
     const indexOfLastUser = currentPage * usersPerPage;
     const indexOfFirstUser = indexOfLastUser - usersPerPage;
     return filtered.slice(indexOfFirstUser, indexOfLastUser);
   }, [users, searchTerm, sortConfig, currentPage]);
+    // Sort
+   
+
+    // Paginate
+    
 
   const pageCount = Math.ceil(users.length / usersPerPage);
 
