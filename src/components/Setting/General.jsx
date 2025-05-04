@@ -18,7 +18,7 @@ const General = () => {
         const fetchConfig = async () => {
           try {
             setLoading(true);
-            const response = await axios.get('http://localhost:5000/api/platformconfig', {
+            const response = await axios.get('http://localhost:5000/api/platformconfig/platformconfig', {
               headers: {
                 Authorization: `Bearer ${localStorage.getItem('token')}`
               }
