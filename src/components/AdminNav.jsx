@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { FaBell, FaUser } from "react-icons/fa";
 import axios from 'axios';
 import { message } from 'antd';
@@ -6,29 +6,19 @@ import { message } from 'antd';
 const BACKEND_URL = 'http://localhost:5000'; // Update this with your backend URL
 
 const AdminNav = () => {
-  const [sending, setSending] = useState(false);
+  const [fetchingMessage, setFetchingMessage] = useState(false);
 
-  const handleSendNotification = async () => {
+  // Add function to fetch global message
+  const handleGetGlobalMessage = async () => {
     try {
-      setSending(true);
-      
-      const token = localStorage.getItem('token');
-      if (!token) {
-        message.error('Not authenticated');
-        return;
-      }
-      
-      await axios.post(`${BACKEND_URL}/api/notifications/send`, 
-        { message: "Notification has been send by admin" },
-        { headers: { Authorization: `Bearer ${token}` }}
-      );
-      
-      message.success('Notification sent successfully!');
+      setFetchingMessage(true);
+      const response = await axios.get(`${BACKEND_URL}/api/globalmessage/message`);
+      message.info(response.data.message);
     } catch (error) {
-      console.error('Error sending notification:', error);
-      message.error('Failed to send notification');
+      console.error('Error fetching global message:', error);
+      message.error(`Failed to fetch message: ${error.response?.data?.message || error.message}`);
     } finally {
-      setSending(false);
+      setFetchingMessage(false);
     }
   };
 
@@ -38,12 +28,13 @@ const AdminNav = () => {
 
       <div className='flex justify-between items-center gap-x-5'>
         <p>Admin</p>
+        
         <button 
           className='h-[2.3rem] rounded-md px-2 bg-[#142937]'
-          onClick={handleSendNotification}
-          disabled={sending}
+          onClick={handleGetGlobalMessage}
+          disabled={fetchingMessage}
         >
-          {sending ? 'Sending...' : 'Send Notification'}
+          {fetchingMessage ? 'Loading...' : 'Send Notification'}
         </button>
 
         <div className='flex justify-center items-center h-[2.3rem] w-[2.3rem] bg-[#142937] rounded-md px-2 cursor-pointer'>
