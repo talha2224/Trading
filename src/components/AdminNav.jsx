@@ -3,7 +3,7 @@ import { FaBell, FaUser } from "react-icons/fa";
 import axios from 'axios';
 import { message } from 'antd';
 
-const BACKEND_URL = 'http://localhost:5000'; // Update this with your backend URL
+const BACKEND_URL = 'https://backend-nine-tau-59.vercel.app'; // Update this with your backend URL
 
 const AdminNav = () => {
   const [fetchingMessage, setFetchingMessage] = useState(false);

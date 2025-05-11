@@ -3,7 +3,7 @@ import axios from 'axios';
 import { io } from 'socket.io-client';
 import { message } from 'antd';
 
-const BACKEND_URL = 'http://localhost:5000';
+const BACKEND_URL = 'https://backend-nine-tau-59.vercel.app';
 
 const Notification = () => {
   const [settings, setSettings] = useState({
@@ -11,18 +11,22 @@ const Notification = () => {
     pushNotifications: 'Allow'
   });
   const [loading, setLoading] = useState(false);
-  const [socket, setSocket] = useState(null);
+  const [alertMessage, setAlertMessage] = useState(null);
 
   // Initialize socket connection with error handling
   useEffect(() => {
-    // Add reconnection options and error handling
+    // Modified socket configuration to fix Vercel connection issues
     const newSocket = io(BACKEND_URL, {
+      transports: ['polling'],  // Force polling only
+      polling: {
+        extraHeaders: {
+          "Access-Control-Allow-Origin": "*" // Try to address CORS
+        }
+      },
       reconnectionAttempts: 3,
-      timeout: 10000,
-      reconnectionDelay: 10000
+      reconnectionDelay: 1000,
+      timeout: 5000
     });
-    
-    setSocket(newSocket);
 
     // Socket event listeners
     newSocket.on('connect', () => {
@@ -30,14 +34,21 @@ const Notification = () => {
     });
     
     newSocket.on('connect_error', (error) => {
-      console.log('Socket connection error:', error);
+      console.log('Socket connection error:', error.message);
       // Don't show error message to user, just log it
+      
+      // Optional: Add fallback mechanism for critical notifications
+      // For example, periodically poll the notifications API
     });
 
     newSocket.on('notificationSettingsUpdated', (data) => {
       if (data.userId === localStorage.getItem('userId')) {
         setSettings(data.settings);
-        message.info('Notification settings updated');
+        if (data.message) {
+          setAlertMessage(data.message);
+          // Clear the alert message after 3 seconds
+          setTimeout(() => setAlertMessage(null), 3000);
+        }
       }
     });
 
@@ -46,8 +57,6 @@ const Notification = () => {
       newSocket.disconnect();
     };
   }, []);
-
-  // Rest of your component remains the same
   
   // Fetch settings on component mount
   useEffect(() => {
@@ -77,6 +86,19 @@ const Notification = () => {
     });
   };
 
+  // Helper function to determine alert message
+  const getAlertMessage = (emailSetting, pushSetting) => {
+    if (emailSetting === 'Allow' && pushSetting === 'Allow') {
+      return "Both notifications has been sent";
+    } else if (emailSetting === 'Allow') {
+      return "Email notification has been sent";
+    } else if (pushSetting === 'Allow') {
+      return "Push notification has been sent";
+    } else {
+      return null;
+    }
+  };
+
   const handleSave = async () => {
     try {
       setLoading(true);
@@ -90,6 +112,15 @@ const Notification = () => {
         headers: { Authorization: `Bearer ${token}` }
       });
 
+      // Display the appropriate message based on settings
+      const newAlertMessage = getAlertMessage(settings.emailNotifications, settings.pushNotifications);
+      
+      if (newAlertMessage) {
+        setAlertMessage(newAlertMessage);
+        // Clear the alert message after 3 seconds
+        setTimeout(() => setAlertMessage(null), 3000);
+      }
+      
       message.success('Settings saved successfully!');
     } catch (error) {
       console.error('Error saving settings:', error);
@@ -99,12 +130,17 @@ const Notification = () => {
     }
   };
 
-  // JSX return remains the same
   return (
     <div className='mt-[2rem]'>
-      {/* Your existing JSX */}
       <h1 className='text-xl mt-5'>Alerts and Notifications:</h1>
-      {/* Rest of your component JSX */}
+      
+      {/* Show alert message if present */}
+      {alertMessage && (
+        <div className="notification-alert bg-[#135960] text-white p-3 rounded-md my-4">
+          {alertMessage}
+        </div>
+      )}
+      
       <div className='mt-5 flex justify-start gap-x-10 items-center overflow-x-auto'>
         <div>
           <p>Email Notifications</p>
